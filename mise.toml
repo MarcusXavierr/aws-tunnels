@@ -1,0 +1,2 @@
+# Shared, committable project config (tool versions, non-secret env).
+# Secrets live in mise.local.toml, which is gitignored.

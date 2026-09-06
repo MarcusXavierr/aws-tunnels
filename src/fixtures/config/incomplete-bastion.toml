@@ -1,0 +1,8 @@
+[groups.prod.bastion]
+
+[[groups.prod.tunnels]]
+label = "app"
+remote_host = "prod.example.test"
+remote_port = 3306
+local_port = 13306
+expect_banner = true

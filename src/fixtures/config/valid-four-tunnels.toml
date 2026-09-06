@@ -1,0 +1,33 @@
+[groups.prod.bastion]
+eip = "107.20.138.57"
+
+[[groups.prod.tunnels]]
+label = "app"
+remote_host = "gfour-prod.cgbumsa6wr9j.us-east-1.rds.amazonaws.com"
+remote_port = 3306
+local_port = 13306
+expect_banner = true
+
+[[groups.prod.tunnels]]
+label = "legacy"
+remote_host = "69.167.182.74"
+remote_port = 3306
+local_port = 13307
+expect_banner = true
+
+[groups.staging.bastion]
+eip = "35.170.92.228"
+
+[[groups.staging.tunnels]]
+label = "app"
+remote_host = "gfour-staging.cgbumsa6wr9j.us-east-1.rds.amazonaws.com"
+remote_port = 3306
+local_port = 13316
+expect_banner = true
+
+[[groups.staging.tunnels]]
+label = "legacy"
+remote_host = "69.167.182.76"
+remote_port = 3306
+local_port = 13317
+expect_banner = true

@@ -1,0 +1,5 @@
+[groups.prod]
+tunnels = []
+
+[groups.prod.bastion]
+eip = "107.20.138.57"

@@ -1,8 +1,16 @@
 {
   "name": "aws_tunnels",
-  "module": "index.ts",
+  "version": "0.1.0",
   "type": "module",
   "private": true,
+  "bin": {
+    "awstun": "./src/main.ts"
+  },
+  "scripts": {
+    "awstun": "bun src/main.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

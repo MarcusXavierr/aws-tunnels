@@ -1,0 +1,10 @@
+[groups.prod.bastion]
+eip = "107.20.138.57"
+instance_id = "i-0123456789abcdef0"
+
+[[groups.prod.tunnels]]
+label = "app"
+remote_host = "prod.example.test"
+remote_port = 3306
+local_port = 13306
+expect_banner = true

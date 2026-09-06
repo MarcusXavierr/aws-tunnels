@@ -1,22 +1,22 @@
 # Architecture Decision Records
 
-Cada arquivo registra uma decisão arquiteturalmente significativa, no formato [MADR](https://adr.github.io/madr/).
+Each file records an architecturally significant decision, in the [MADR](https://adr.github.io/madr/) format.
 
-Um ADR aceito é imutável. Quando a decisão muda, não edite o registro antigo: escreva um novo e marque o `status` do anterior como `superseded by ADR-NNNN`. O valor do log está em preservar o motivo de a decisão ter sido tomada na época, inclusive o raciocínio que depois se mostrou errado.
+An accepted ADR is immutable. When a decision changes, do not edit the old record: write a new one and mark the previous record's `status` as `superseded by ADR-NNNN`. The log's value lies in preserving the reason the decision was made at the time, including the reasoning that later proved wrong.
 
-| ADR | Decisão | Status |
+| ADR | Decision | Status |
 | --- | --- | --- |
-| [0001](0001-supervisor-em-foreground-sem-daemon.md) | O supervisor roda em foreground e morre com o terminal; daemon fica para depois | accepted |
-| [0002](0002-transporte-delegado-ao-aws-cli.md) | O port forward é aberto por `aws ssm start-session`, não por implementação própria do data channel | accepted |
-| [0003](0003-saude-por-sonda-na-porta.md) | Saúde do túnel é medida sondando a porta local, com espera opcional do primeiro byte | accepted |
-| [0004](0004-bastion-resolvido-por-elastic-ip.md) | O bastion é resolvido pela Elastic IP em runtime, nunca por instance id fixo | accepted |
-| [0005](0005-funcoes-zsh-como-interface-publica.md) | `tunnel_prod_db`/`tunnel_staging_db` continuam sendo a interface, via `exec -a` | accepted |
+| [0001](0001-foreground-supervisor-no-daemon.md) | The supervisor runs in the foreground and dies with the terminal; a daemon comes later | accepted |
+| [0002](0002-transport-delegated-to-aws-cli.md) | The port forward is opened by `aws ssm start-session`, not by an owned data channel implementation | accepted |
+| [0003](0003-health-via-port-probe.md) | Tunnel health is measured by probing the local port, with an optional first-byte wait | accepted |
+| [0004](0004-bastion-resolved-by-elastic-ip.md) | The bastion is resolved by its Elastic IP at runtime, never by a fixed instance id | accepted |
+| [0005](0005-zsh-functions-as-public-interface.md) | `tunnel_prod_db`/`tunnel_staging_db` remain the interface, via `exec -a` | accepted |
 
-## Adicionando um
+## Adding one
 
-Copie um template da skill `writing-madrs`, numere na sequência e adicione a linha na tabela acima no mesmo commit.
+Copy a template from the `writing-madrs` skill, number it in sequence, and add the row to the table above in the same commit.
 
-Duas regras fazem a maior parte do trabalho:
+Two rules do most of the work:
 
-* Registre as opções rejeitadas e por quê. Uma decisão sem alternativas é uma afirmação.
-* Registre as consequências ruins junto das boas. Um ADR só com vantagens é marketing.
+* Record the rejected options and why. A decision without alternatives is an assertion.
+* Record the bad consequences along with the good ones. An ADR with only upsides is marketing.

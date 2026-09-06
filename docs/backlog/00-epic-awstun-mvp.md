@@ -1,4 +1,4 @@
-# [EPIC] `awstun`: túneis de banco que se levantam sozinhos
+# [EPIC] awstun: database tunnels that bring themselves back up
 
 **Type:** Epic
 **Priority:** P0
@@ -9,23 +9,23 @@
 
 ## Goal
 
-Substituir as funções de shell que abrem os túneis SSM para os bancos por uma CLI compilada que mantém cada túnel de pé sozinho, reconectando quando ele morre.
+Replace the shell functions that open the SSM tunnels to the databases with a compiled CLI that keeps each tunnel up on its own, reconnecting when it dies.
 
 ## Context
 
-Consultar os bancos de prod e staging depende de quatro túneis SSM abertos por duas funções de 88 linhas no `~/.zshrc`. Eles morrem sozinhos por dois motivos: o Session Manager encerra sessão ociosa em 20 minutos, e o `session-manager-plugin` às vezes continua vivo com o túnel já morto depois de uma reciclagem de WebSocket. Nos dois casos ninguém reinicia nada, e a descoberta acontece no meio de outra coisa, com uma consulta que trava. Este épico entrega `awstun`: configuração declarativa em TOML, supervisão com sonda, reinício com backoff e desligamento limpo.
+Querying the prod and staging databases depends on four SSM tunnels opened by two 88-line functions in `~/.zshrc`. They die on their own for two reasons: Session Manager terminates an idle session after 20 minutes, and the `session-manager-plugin` sometimes stays alive with the tunnel already dead after a WebSocket recycling. In both cases nothing restarts anything, and the discovery happens in the middle of something else, with a query that hangs. This epic delivers `awstun`: declarative TOML configuration, supervision with probing, restart with backoff, and clean shutdown.
 
-O plano de origem está em [`ssm_tunel_plan.md`](../../ssm_tunel_plan.md) (escrito para Python, agora em Bun). As decisões estruturais e o que foi rejeitado estão em [`docs/decisions/`](../decisions/README.md).
+The source plan is in [`ssm_tunnel_plan.md`](../../ssm_tunnel_plan.md) (written for Python, now in Bun). The structural decisions and what was rejected are in [`docs/decisions/`](../decisions/README.md).
 
-## Escopo
+## Scope
 
-Dentro: config TOML, resolução de bastion por Elastic IP, subida e supervisão de N túneis por grupo, sonda com espera de banner, backoff, shutdown limpo, testes com plugin falso, binário compilado, cutover do `~/.zshrc` e verificação contra a AWS real.
+In: TOML config, bastion resolution by Elastic IP, startup and supervision of N tunnels per group, probe with banner wait, backoff, clean shutdown, tests with a fake plugin, compiled binary, `~/.zshrc` cutover, and verification against real AWS.
 
-Fora: modo daemon, `status`/`down`/`logs`, transporte nativo sem o `aws` CLI. Os dois estão no épico de pós-MVP.
+Out: daemon mode, `status`/`down`/`logs`, native transport without the `aws` CLI. Both live in the post-MVP epic.
 
-## Acceptance Criteria
+## Done when
 
-* `awstun up prod` mantém 13306 e 13307 servindo dados por mais de 20 minutos sem intervenção
-* Matar o plugin de um túnel, ou congelá-lo com `SIGSTOP`, faz só aquele túnel voltar; o outro não é tocado
-* Ctrl-C não deixa processo `session-manager-plugin` nem porta em LISTEN
-* `tunnel_prod_db` continua sendo o comando, e `pgrep -af tunnel_prod_db` continua casando para as skills do repo `api`
+* `awstun up prod` keeps 13306 and 13307 serving data for more than 20 minutes without intervention
+* Killing one tunnel's plugin, or freezing it with `SIGSTOP`, brings back only that tunnel; the other is untouched
+* Ctrl-C leaves no `session-manager-plugin` process and no port in LISTEN
+* `tunnel_prod_db` remains the command, and `pgrep -af tunnel_prod_db` keeps matching for the `api` repo skills
